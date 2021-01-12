@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: "Update Packages"
+    apt:
+      update_cache: yes
+
+  - name: "Install NodeJS and NPM"
+    apt:
+      name: ['nodejs', 'npm']
+      state: latest
+      update_cache: yes
+

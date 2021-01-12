@@ -1,0 +1,17 @@
+---
+- name: "Install NodeJS and NPM"
+  apt:
+    name: ['nodejs', 'npm']
+    state: latest
+    update_cache: yes
+
+- name: "Install, Build and Start server"
+  become: true
+  shell: |
+    mv /home/backend.tar.gz /home/ubuntu/backend.tar.gz
+    cd /home/ubuntu
+    tar xzvf backend.tar.gz
+    cd backend
+    npm i
+    npm run build
+    npm start
