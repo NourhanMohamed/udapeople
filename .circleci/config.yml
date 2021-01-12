@@ -5,6 +5,15 @@ commands:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.  
     steps:
       - run:
+          name: Install AWS CLI
+          when: on_fail
+          command: |
+            if ! [ -x "$(command -v aws)" ]; then
+            pip install awscli
+            else
+            echo "AWS CLI already installed"
+            fi
+      - run:
           name: Remove S3 files and delete bucket
           when: on_fail
           command: |
@@ -156,6 +165,15 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Add back-end ip to ansible inventory
+          command: |
+            echo -e "[web]\n" > ./.circleci/ansible/inventory.txt
+            aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=udapeople-backend" \
+            --output text >> ./.circleci/ansible/inventory.txt
+            cat ./.circleci/ansible/inventory.txt
+      - run:
+          name: Add back-end ip only to IP file for later use
           command: |
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
