@@ -6,10 +6,14 @@
     state: latest
     update_cache: yes
 
+- name: Copy files to EC2 instance
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu
+
 - name: "Install, Build and Start server"
   become: true
   shell: |
-    cp /root/project/backend /home/ubuntu
     cd /home/ubuntu/backend
     npm i
     npm run build
