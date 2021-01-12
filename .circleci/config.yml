@@ -193,7 +193,6 @@ jobs:
             cd ./backend 
             npm i
             touch .env
-            echo ENVIROMENT=$ENVIROMENT >> ./.env
             echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ./.env
             echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ./.env
             echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ./.env
@@ -276,7 +275,6 @@ jobs:
           command: |
             cd ./backend 
             touch .env
-            echo ENVIROMENT=$ENVIROMENT >> ./.env
             echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION >> ./.env
             echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> ./.env
             echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> ./.env
