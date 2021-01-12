@@ -162,7 +162,6 @@ jobs:
           paths:
             - inventory.txt
             - ip.txt
-      - revert-migrations
       - destroy-environment
 
   configure-infrastructure:
@@ -184,7 +183,6 @@ jobs:
           name: Configure server
           command: |
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ./.circleci/ansible/inventory.txt ./.circleci/ansible/configure-server.yml
-      - revert-migrations
       - destroy-environment
 
   run-migrations:
