@@ -31,7 +31,7 @@ commands:
             --request GET https://api.memstash.io/values/migration_status_${CIRCLE_WORKFLOW_ID})          
             if [[ $migrationSuccess==1 ]]
             then
-              cd /home/ubuntu/backend
+              cd ./backend
               npm i
               npm run migrations:revert
             fi
@@ -178,6 +178,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
+            apk add --update tar
+            apk add --update gzip
       - run:
           name: Configure server
           command: |
