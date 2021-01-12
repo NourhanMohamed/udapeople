@@ -335,7 +335,6 @@ jobs:
           command: |
             backendIP=`cat ./.circleci/ansible/ip.txt`
             echo $backendIP
-            sleep 60
             URL="http://$backendIP:3030/api/status"
             echo $URL
             curl -s $URL
@@ -349,7 +348,6 @@ jobs:
             else
               return 1
             fi
-      - revert-migrations
       - destroy-environment  
  
   cloudfront-update:
