@@ -1,5 +1,4 @@
 ---
-
 - name: "configuration play." 
   hosts: web
   user: ubuntu
@@ -21,5 +20,5 @@
       changed_when: false     
 
   roles:
-    configure-server
-    configure-prometheus-node-exporter
+    - configure-server
+    - configure-prometheus-node-exporter
