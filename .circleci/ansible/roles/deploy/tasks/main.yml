@@ -32,5 +32,5 @@
 - name: "Start server"
   become: true
   shell: |
-    cd /home/ubuntu/backen
-    npm start &
+    cd /home/ubuntu/backend
+    nohup npm start > /dev/null 2>&1 &

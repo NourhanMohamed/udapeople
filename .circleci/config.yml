@@ -319,8 +319,8 @@ jobs:
           command: |
             cd ./.circleci/ansible
             ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.txt deploy-backend.yml
-      # - revert-migrations
-      # - destroy-environment
+      - revert-migrations
+      - destroy-environment
  
   smoke-test:
     docker:
@@ -353,7 +353,7 @@ jobs:
             else
               return 0
             fi
-      # - destroy-environment  
+      - destroy-environment  
  
   cloudfront-update:
     docker:
