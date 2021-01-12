@@ -8,10 +8,8 @@
 - name: "Install, Build and Start server"
   become: true
   shell: |
-    mv /home/backend.tar.gz /home/ubuntu/backend.tar.gz
-    cd /home/ubuntu
-    tar xzvf backend.tar.gz
-    cd backend
+    cp /root/project/backend /home/ubuntu
+    cd /home/ubuntu/backend
     npm i
     npm run build
     npm start
