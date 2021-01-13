@@ -47,6 +47,25 @@ commands:
           when: on_fail
             
 jobs:
+
+  s3-cleanup:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum -y install tar 
+            yum -y install gzip
+      - run:
+          name: Delete old S3 Bucket
+          command: |
+            aws s3 rm s3://udapeople-ka1j8687hjpnmz233 \
+            --recursive
+            aws s3 rb s3://udapeople-ka1j8687hjpnmz233 \
+            --force
+  
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -403,32 +422,33 @@ jobs:
       - revert-migrations
       - destroy-environment
 
-  s3-cleanup:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      - checkout
-      - attach_workspace:
-          at: .circleci/ansible/
-      - run:
-          name: Install dependencies
-          command: |
-            yum -y install tar 
-            yum -y install gzip
-      - run:
-          name: Update cloudfront stack
-          command: |
-            cd .circleci/ansible/
-            originalWorkflowID=`cat ./originalWorkflowID.txt`
-            echo $originalWorkflowID
-            aws s3 rm s3://udapeople-$originalWorkflowID \
-            --recursive
-            aws s3 rb s3://udapeople-$originalWorkflowID \
-            --force
+  # s3-cleanup:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - attach_workspace:
+  #         at: .circleci/ansible/
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           yum -y install tar 
+  #           yum -y install gzip
+  #     - run:
+  #         name: Update cloudfront stack
+  #         command: |
+  #           cd .circleci/ansible/
+  #           originalWorkflowID=`cat ./originalWorkflowID.txt`
+  #           echo $originalWorkflowID
+  #           aws s3 rm s3://udapeople-$originalWorkflowID \
+  #           --recursive
+  #           aws s3 rb s3://udapeople-$originalWorkflowID \
+  #           --force
             
 workflows:
   default:
     jobs:
+      - s3-cleanup
       - build-frontend
       - build-backend
       - test-frontend:
@@ -456,5 +476,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
-      - s3-cleanup:
-          requires: [cloudfront-update]
+      # - s3-cleanup:
+      #     requires: [cloudfront-update]
