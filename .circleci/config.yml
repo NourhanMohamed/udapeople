@@ -403,6 +403,28 @@ jobs:
       - revert-migrations
       - destroy-environment
 
+  s3-cleanup:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .circleci/ansible/
+      - run:
+          name: Install dependencies
+          command: |
+            yum -y install tar 
+            yum -y install gzip
+      - run:
+          name: Update cloudfront stack
+          command: |
+            cd .circleci/ansible/
+            originalWorkflowID=`cat ./originalWorkflowID.txt`
+            echo $originalWorkflowID
+            aws s3 rm s3://udapeople-$originalWorkflowID \
+            --recursive
+            aws s3 rb s3://udapeople-$originalWorkflowID \
+            --force
             
 workflows:
   default:
@@ -434,3 +456,5 @@ workflows:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
           requires: [smoke-test]
+      - s3-cleanup:
+          requires: [cloudfront-update]
