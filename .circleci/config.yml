@@ -430,7 +430,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - s3-cleanup
       - build-frontend
       - build-backend
       - test-frontend:
